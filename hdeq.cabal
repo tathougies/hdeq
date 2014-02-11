@@ -1,0 +1,36 @@
+Name:          HDeq
+Version:       0.0.1
+Cabal-Version: >= 1.8
+License:       AllRightsReserved
+License-File:  LICENSE
+Author:        Travis Athougies
+Homepage:      http://travis.athougies.net/projects/hquant
+Category:      Distributed
+Synopsis:      High-performance Distributed Event Queue
+Build-Type:    Simple
+
+Library
+        Build-depends: base, containers, cereal, conduit, network-conduit,
+                       text, bytestring, stm, ghc-prim, mtl, hslogger, configurator,
+                       unordered-containers, random, stm-chans, stm-conduit, resourcet
+        Exposed-modules: Distributed.DEQ.Types Distributed.DEQ.Local Distributed.DEQ.Remote Distributed.DEQ.Queue Distributed.DEQ.Config Distributed.DEQ.Server
+        Hs-Source-Dirs: src
+
+-- Executable deq-server
+--         Main-is: src/Distributed/DEQ/Server.hs
+--         Hs-Source-Dirs: src
+
+Executable deq-server
+        Build-depends: HDeq, base, configurator, unordered-containers, hslogger
+        Main-is: DEQLocalServer.hs
+        Hs-Source-Dirs: utils
+
+Executable deq-client
+        Build-depends: HDeq, base, configurator, unordered-containers, hslogger
+        Main-is: DEQLocalClient.hs
+        Hs-Source-Dirs: utils
+
+Executable deq-test-writer
+        Build-depends: HDeq, base, configurator, unordered-containers, random, hslogger
+        Main-is: DEQTestWriter.hs
+        Hs-Source-Dirs: utils
