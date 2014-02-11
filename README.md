@@ -16,16 +16,16 @@ Current State
 
 HDeq currently provides:
 
-    * A simple and unified API for creating and managing distributed queues.
+ * A simple and unified API for creating and managing distributed queues.
 
 Future Plans
 ------------
 
 In the future, HDeq will provide:
 
-    * A well-thought-out access control system
-    * Throttling and bandwidth limiting support
-    * Latency handlers
+ * A well-thought-out access control system
+ * Throttling and bandwidth limiting support
+ * Latency handlers
 
 Benchmarks
 -----------
