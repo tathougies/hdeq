@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 module Distributed.DEQ.Queue (
   newDEQ,
   newQueue,
@@ -76,4 +77,12 @@ send x (WriteEnd _ chan) = Right <$> atomically (writeTChan chan x)
 receive :: DEQable a => ReadEnd a -> IO (Either QueueError a)
 receive (ReadEnd _ chan) = Right <$> atomically (readTChan chan)
 
-serveDEQ deq = forever yield
+serveDEQ deq = do
+  r <- newQueue deq "/.deq/quit" (Local 0)
+  case r of
+    Left err -> fail ("Could not serveDEQ: " ++ show err)
+    Right (_, q)  -> do
+                 r <- receive q
+                 case r of
+                   Left err -> fail ("Got a message from receive: " ++ show err)
+                   Right () -> return ()

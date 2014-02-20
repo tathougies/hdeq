@@ -148,6 +148,7 @@ instance DEQable Raw
 instance DEQable Int
 instance DEQable Float
 instance DEQable Char
+instance DEQable ()
 instance (DEQable a) => DEQable [a]
 instance (DEQable a, DEQable b) => DEQable (a, b)
 instance (DEQable a, DEQable b, DEQable c) => DEQable (a, b, c)

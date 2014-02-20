@@ -18,7 +18,7 @@ main :: IO ()
 main = do
   updateGlobalLogger "Distributed" $ setLevel DEBUG
   [path] <- getArgs
-  settings <- loadDEQSettings' [] (fromList [("client.unixSocket", String "deq-socket")])
+  settings <- loadDEQSettings ProducerConsumer
   deq <- newDEQ settings
   rd <- joinQueue deq (fromString path)
   case rd of

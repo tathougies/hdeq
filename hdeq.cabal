@@ -15,6 +15,7 @@ Library
                        unordered-containers, random, stm-chans, stm-conduit, resourcet
         Exposed-modules: Distributed.DEQ.Types Distributed.DEQ.Local Distributed.DEQ.Remote Distributed.DEQ.Queue Distributed.DEQ.Config Distributed.DEQ.Server
         Hs-Source-Dirs: src
+        ghc-options: -threaded
 
 -- Executable deq-server
 --         Main-is: src/Distributed/DEQ/Server.hs
@@ -24,13 +25,16 @@ Executable deq-server
         Build-depends: HDeq, base, configurator, unordered-containers, hslogger
         Main-is: DEQLocalServer.hs
         Hs-Source-Dirs: utils
+        ghc-options: -threaded
 
 Executable deq-client
         Build-depends: HDeq, base, configurator, unordered-containers, hslogger
         Main-is: DEQLocalClient.hs
         Hs-Source-Dirs: utils
+        ghc-options: -threaded
 
 Executable deq-test-writer
         Build-depends: HDeq, base, configurator, unordered-containers, random, hslogger
         Main-is: DEQTestWriter.hs
         Hs-Source-Dirs: utils
+        ghc-options: -threaded

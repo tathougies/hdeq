@@ -87,7 +87,8 @@ clientCreateQueue deq name vis = do
          Left e -> return (Left e)
          Right (LocalQueueRegistered qi chan) -> do
            chan' <- convertTChan chan
-           return (Right (WriteEnd qi chan', ReadEnd qi chan'))
+           chan'' <- atomically $ dupTChan chan'
+           return (Right (WriteEnd qi chan', ReadEnd qi chan''))
          Right (LocalRemoteFailure err) -> return (Left err)
          Right response -> return (Left UnexpectedReply)
 

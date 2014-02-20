@@ -5,6 +5,7 @@ module Distributed.DEQ.Config
        ( DEQSettings,
          DEQProperty,
          HostType(..),
+         Role(..),
 
          loadDEQSettings,
          loadDEQSettings',
@@ -39,19 +40,27 @@ newtype DEQProperty = DEQProperty { property_ :: Name }
 
 data HostType = UNIX | TCP deriving (Show, Read, Eq, Ord, Enum)
 
+data Role = ProducerConsumer | LocalServer | Root
+          deriving (Show, Read, Eq, Ord, Enum)
+
 type GetProperty a = DEQSettings -> a
+
+configForRole :: Role -> FilePath
+configForRole ProducerConsumer = "deq-client.cfg"
+configForRole LocalServer      = "deq-localserver.cfg"
+configForRole Root             = "deq-root.cfg"
 
 -- | Load DEQ  settings from the default locations. Currently, these are:
 --
 --       * @/etc/deq/deq.cfg@
---       * @$(HOME)/deq/deq.cfg@
+--       * @$(HOME)/.deq/deq.cfg@
 --       * @deq.cfg@ (in current directory)
-loadDEQSettings :: IO DEQSettings
-loadDEQSettings = DEQSettings <$>
-                  (getMap =<<
-                   load [Optional "/etc/deq/deq.cfg",
-                         Optional "$(HOME)/deq/deq.cfg",
-                         Optional "deq.cfg"])
+loadDEQSettings :: Role -> IO DEQSettings
+loadDEQSettings role = DEQSettings <$>
+                       (getMap =<<
+                        load [Optional ("/etc/deq/" ++ configForRole role),
+                              Optional ("$(HOME)/.deq/" ++ configForRole role),
+                              Optional (configForRole role)])
 
 loadDEQSettings' :: [FilePath] -> HashMap Name Value -> IO DEQSettings
 loadDEQSettings' files defaults = DEQSettings . (<> defaults) <$>
